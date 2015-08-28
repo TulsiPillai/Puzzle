@@ -1,0 +1,56 @@
+using UnityEngine;
+using System.Collections;
+using System.Xml;
+using System.Collections.Generic; 
+
+public class LevelHandler : MonoBehaviour {
+
+	XmlDocument levelDoc;
+	XmlNodeList levelList;
+	public List<string> levelArray;
+
+	// Use this for initialization
+	void Start () {
+		print ("level handler");
+
+
+	}
+
+	// Update is called once per frame
+	void Update () {
+	
+	}
+
+	public void LoadLevel(int nr){
+		levelArray = new List<string>();
+		levelDoc = new XmlDocument();
+		
+		TextAsset xmlfile = Resources.Load ("levels", typeof(TextAsset)) as TextAsset; //load xml file from assets
+		levelDoc.LoadXml (xmlfile.text);  //load xm file variable into xml document
+		levelList = levelDoc.GetElementsByTagName ("level"); //load level tag in levellist
+		foreach (XmlNode leveldata in levelList) {                // get each xmlnode
+			XmlNodeList levelinfo = leveldata.ChildNodes;
+			Debug.Log (levelList.Count);
+			foreach(XmlNode data in levelinfo){
+				Debug.Log(data.Name);
+				if(data.Name == "setup"){                  //setup tag within level tag
+					//Debug.Log(data.InnerText);
+					levelArray.Add(data.InnerText);
+					//print(levelArray[0]);
+				}
+			}
+		}
+		this.gameObject.GetComponent<engine> ().init (levelArray.Count);
+		//GameObject.Find ("titleCanvas").GetComponent<menu> ().setLevelText (nr.ToString ());
+		string[] levString = new string[1];
+		//levString[0] = ("");
+		int i = nr - 1;
+		print ("nr is" + nr);
+		print ("levstring of 0 " + levelArray[i]);
+		levString = levelArray[i].Split (',');	
+		foreach (string brick in levString) {
+			GameObject.Find(brick).GetComponent<lightSwitch>().change();
+		}
+		
+	}
+}
