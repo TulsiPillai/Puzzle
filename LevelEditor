@@ -1,0 +1,49 @@
+using UnityEngine;
+using System.Collections;
+using System.IO; //write xml code to a new file
+
+public class levelEditor : MonoBehaviour {
+
+
+	public string levNumber;
+	string runTimeLevels;
+	// Use this for initialization
+	void Start () {
+	
+	}
+	
+	// Update is called once per frame
+	void Update () {
+	
+	}
+	public void setLevelName(string nr){
+		levNumber = nr;
+
+	}
+	public void clearButoon(){
+		for (int i =1; i<26; i++) {
+			if(GameObject.Find(i.ToString()).GetComponent<lightSwitch>().isOn){
+				GameObject.Find(i.ToString()).GetComponent<lightSwitch>().change();
+			}
+		}
+	}
+	public void saveButton(){
+		string levelString = "";
+		for (int i =1; i<26; i++) {
+			if (GameObject.Find (i.ToString ()).GetComponent<lightSwitch> ().isOn) {
+				if(levelString.Length ==0){ 
+					levelString = i.ToString(); }
+				else{
+					levelString += "," + i;
+				}
+			}
+		}
+		runTimeLevels +=
+			"\n\n" + 
+			"<level>" + "\n" +
+			"<levelname>" + levNumber + "</levelname>" +
+			"<setup>" + levelString + "</setup>" + "\n" +
+			"</level>";
+		System.IO.File.WriteAllText ("E:/Unity_4.0/Puzzle/Assets/Resources/editor.txt", runTimeLevels);
+	}
+}
