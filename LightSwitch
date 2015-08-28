@@ -1,0 +1,27 @@
+using UnityEngine;
+using System.Collections;
+
+public class lightSwitch : MonoBehaviour {
+	public bool isOn = true;
+	// Use this for initialization
+	void Start () {
+	
+	}
+	
+	// Update is called once per frame
+	void Update () {
+	
+	}
+	public void change(){
+
+		Vector3 curPos = this.transform.FindChild ("Plane").position;
+
+		if (isOn) {
+			isOn = false;
+			this.transform.FindChild ("Plane").position = new Vector3(curPos.x, curPos.y, curPos.z + .7f);
+		} else {
+			isOn = true;
+			this.transform.FindChild ("Plane").position = new Vector3(curPos.x, curPos.y, curPos.z - .7f);
+		}
+	}
+}
